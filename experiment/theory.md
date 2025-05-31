@@ -2,6 +2,10 @@
 
 The Reynolds number (Re) is a dimensionless quantity used in fluid mechanics to predict the type of flow in a pipe or channel. It is defined as the ratio of inertial forces to viscous forces and is given by the formula:
 
+Re= (ρ x u x D)/𝜇
+
+
+
 Where:
 
 𝜌 = density of the fluid (kg/m³)
