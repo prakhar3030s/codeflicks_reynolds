@@ -118,7 +118,7 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1rem;
 }
 
 header {
@@ -176,19 +176,28 @@ h1 {
 .simulation-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
+    margin-top: 1rem;
 }
 
-.input-section, .results-section, .visualization-section {
+.input-section, .results-section {
     background-color: var(--card-background);
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     color: var(--text-color);
+    height: fit-content;
 }
 
 .visualization-section {
     grid-column: 1 / -1;
+    background-color: var(--card-background);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: var(--text-color);
+    margin-top: 1rem;
+    width: 100%;
 }
 
 .input-group {
@@ -236,7 +245,11 @@ button:hover {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
 }
 
 .result-display {
@@ -261,16 +274,16 @@ button:hover {
 
 #flow-animation {
     width: 100%;
-    height: 200px;
-    background-color: #f8f9fa;
+    height: 300px;
+    background-color: var(--card-background);
     border-radius: 4px;
     margin-bottom: 1rem;
 }
 
 #reynolds-scale {
     width: 100%;
-    height: 60px;
-    background-color: #f8f9fa;
+    height: 80px;
+    background-color: var(--card-background);
     border-radius: 4px;
 }
 
@@ -295,6 +308,12 @@ button:hover {
     align-items: center;
     padding: 2rem;
     background-color: var(--background-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
 }
 
 .welcome-card {
@@ -625,4 +644,17 @@ button:hover {
 .reset-button:hover {
     background-color: #d32f2f !important;
     transform: translateY(-2px);
+}
+
+/* Update Plotly container styles */
+.js-plotly-plot {
+    width: 100% !important;
+}
+
+.js-plotly-plot .plotly {
+    width: 100% !important;
+}
+
+.plot-container.plotly {
+    width: 100% !important;
 } 
