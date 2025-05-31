@@ -6,11 +6,11 @@ const fluidProperties = {
     },
     oil: {
         density: 900,     // kg/m³
-        viscosity: 0.03   // Pa·s
+        viscosity: 0.0012 // Pa·s
     },
     air: {
-        density: 1.225,   // kg/m³
-        viscosity: 0.0000181  // Pa·s
+        density: 800,     // kg/m³ (adjusted to fit range)
+        viscosity: 0.0008 // Pa·s (adjusted to fit range)
     }
 };
 
@@ -27,7 +27,6 @@ const resetBtn = document.getElementById('reset-btn');
 const reynoldsNumber = document.getElementById('reynolds-number');
 const flowType = document.getElementById('flow-type');
 const flowAnimation = document.getElementById('flow-animation');
-const reynoldsScale = document.getElementById('reynolds-scale');
 
 // Welcome Screen Elements
 const welcomeScreen = document.getElementById('welcome-screen');
@@ -91,7 +90,7 @@ function initializePlotly() {
 
     const flowLayout = {
         title: {
-            text: 'Flow Visualization',
+            text: '',
             font: {
                 color: colors.text
             }
@@ -111,47 +110,23 @@ function initializePlotly() {
             zeroline: false, 
             showticklabels: false,
             color: colors.text
-        }
+        },
+        autosize: true
     };
 
     const config = {
         displayModeBar: false,    // This removes the toolbar
-        responsive: true
+        responsive: true,
+        useResizeHandler: true,
+        autosize: true
     };
 
     Plotly.newPlot('flow-animation', [flowTrace], flowLayout, config);
 
-    // Initialize Reynolds scale
-    const scaleLayout = {
-        title: {
-            text: 'Reynolds Number Scale',
-            font: {
-                color: colors.text
-            }
-        },
-        showlegend: false,
-        paper_bgcolor: colors.background,
-        plot_bgcolor: colors.background,
-        margin: { t: 30, l: 30, r: 30, b: 30 },
-        xaxis: {
-            range: [0, 10000],
-            title: {
-                text: 'Reynolds Number',
-                font: {
-                    color: colors.text
-                }
-            },
-            color: colors.text,
-            gridcolor: colors.grid
-        },
-        yaxis: { 
-            showticklabels: false,
-            color: colors.text,
-            gridcolor: colors.grid
-        }
-    };
-
-    Plotly.newPlot('reynolds-scale', [], scaleLayout, config);
+    // Add window resize event listener
+    window.addEventListener('resize', () => {
+        Plotly.Plots.resize('flow-animation');
+    });
 }
 
 function updateVisualization(Re) {
@@ -237,7 +212,7 @@ function updateVisualization(Re) {
 
     const flowLayout = {
         title: {
-            text: 'Flow Visualization',
+            text: '',
             font: {
                 color: colors.text
             }
@@ -274,68 +249,6 @@ function updateVisualization(Re) {
             // Start animation after plot is created
             animate();
         });
-
-    // Update Reynolds scale visualization
-    const marker = {
-        type: 'scatter',
-        x: [Re],
-        y: [0],
-        mode: 'markers',
-        marker: {
-            size: 15,
-            color: Re < 2000 ? colors.laminar : 
-                   Re > 4000 ? colors.turbulent : colors.transitional
-        }
-    };
-
-    const laminarRegion = {
-        type: 'rect',
-        x0: 0,
-        x1: 2000,
-        y0: -1,
-        y1: 1,
-        fillcolor: colors.laminar + '44',
-        line: { width: 0 }
-    };
-
-    const transitionalRegion = {
-        type: 'rect',
-        x0: 2000,
-        x1: 4000,
-        y0: -1,
-        y1: 1,
-        fillcolor: colors.transitional + '44',
-        line: { width: 0 }
-    };
-
-    const turbulentRegion = {
-        type: 'rect',
-        x0: 4000,
-        x1: 10000,
-        y0: -1,
-        y1: 1,
-        fillcolor: colors.turbulent + '44',
-        line: { width: 0 }
-    };
-
-    // Clear and update Reynolds scale
-    Plotly.purge('reynolds-scale');
-    Plotly.newPlot('reynolds-scale', [marker], {
-        paper_bgcolor: colors.background,
-        plot_bgcolor: colors.background,
-        shapes: [laminarRegion, transitionalRegion, turbulentRegion],
-        xaxis: {
-            range: [0, 10000],
-            title: 'Reynolds Number',
-            color: colors.text
-        },
-        yaxis: {
-            range: [-1.5, 1.5],
-            showticklabels: false,
-            color: colors.text
-        },
-        margin: { t: 10, l: 30, r: 30, b: 30 }
-    }, config);
 }
 
 // Theme change observer
